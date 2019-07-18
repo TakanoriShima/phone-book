@@ -1,0 +1,68 @@
+<% if @members.count == 0 %>
+ <p>データはまだありません</p>
+<% else %>
+<style>
+    table, tr{
+        border: solid 1px;
+        margin: 0 auto;
+    }
+    th, td{
+        border: solid 1px;
+        padding: 5px;
+        text-align: center;
+        width: 15%;
+        margin: 0 auto;
+    }
+    h1{
+        width: 100%;
+        color: red;
+        text-align: center;
+        
+    }
+    .error{
+        color: red;
+        background-color: pink;
+        width: 30%;
+        padding: 3px;
+        padding-left: 10px;
+        margin-bottom: 5px;
+    }
+</style>
+<%= flash[:success] %>
+<ul>
+    <% session[:error].each do |error| %>
+        <li class="error"><%= error %></li>
+    <% end %>
+</ul>
+    
+<% session[:error] = []
+    flash[:success] = ''
+%>
+
+<h1>電話帳</h1>
+<table>
+    <tr>
+        <th>ID</th>
+        <th>名前</th>
+        <th>読み仮名</th>
+        <th>電話番号</th>
+        <th>編集</th>
+        <th>削除</th>
+    </tr>
+    <% @members.each do |member| %>
+    <tr>
+        <td><%= member.id %></td>
+        <td><%= member.name %></td>
+        <td><%= member.yomi %></td>
+        <td><%= member.phone %></td>
+        <td><%= link_to '編集', edit_member_path(id:member.id) %></td>
+        <td><%= link_to '削除', member_path(id:member.id), method: :delete, data: {confirm: "本当に削除しますか？"} %></td>
+    </tr>
+     <% end %>
+    
+</table>
+ 
+<% end %>
+<p>
+    <%= link_to "新規登録", new_member_path%>
+</p>
